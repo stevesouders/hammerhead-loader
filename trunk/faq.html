@@ -1,0 +1,145 @@
+<html>
+<head>
+<title>Hammerhead FAQ</title>
+<link rel="icon" type="image/gif" href="chrome/content/icon-16x16.gif" />
+
+<script>
+function installXPI(href)
+{
+    if (typeof(InstallTrigger) != 'undefined') {
+        var xpi = {'hammerhead': href};
+        InstallTrigger.install(xpi);
+    }
+    else {
+        alert("You must be using Firefox.");
+    }
+}
+</script>
+
+
+<style>
+.code { border: 1px solid #CCC; background: #F0F0F0; width: auto; padding: 0 8px 0 8px; margin: 8px 120px 8px 20px; }
+UL,OL { margin-top: 0; }
+H3 { margin-bottom: 4px; }
+BODY { font-family: arial; }
+#questions LI { margin-bottom: 4px; }
+#questions A { }
+.question { font-weight: bold; margin-top: 20px;}
+.answer {}
+</style>
+</head>
+<body>
+
+<div id=contents class=contents>
+
+<ul id=questions style='list-style-type: none; margin-left: 0; padding-left: 0;'>
+ <li> Q: <a href='#question0'>How are the times measured?</a>
+ <li> Q: <a href='#question1'>What's the difference between "Clear Disk &amp; Mem Cache" and "Clear Mem Cache"?</a>
+ <li> Q: <a href='#question2'>How do these time measurements compare to my performance in the real world?</a>
+
+ <li> Q: <a href='#question3'>Does Hammerhead measure Web 2.0 pages?</a>
+ <li> Q: <a href='#question4'>Why do the load times differ between Fasterfox, YSlow, Firebug Net Panel, and Hammerhead?</a>
+ <li> Q: <a href='#question5'>How come the first page load time when I open the browser or open a new tab isn't measured?</a>
+ <li> Q: <a href='#question6'>What version(s) of Firefox does Hammerhead support?</a>
+
+ <li> Q: <a href='#question7'>Do I need Firebug?</a>
+ <li> Q: <a href='#question8'>Why should I disable Firebug panels?</a>
+ <li> Q: <a href='#question9'>Any known bugs or issues?</a>
+ <li> Q: <a href='#question10'>What's on the todo list?</a>
+
+</ul>
+
+<hr style='margin-top: 20px; margin-bottom: 20px;'>
+
+<a name='question0'></a>
+<div class=question> Q: How are the times measured?</div>
+<div class=answer> A: The test URLs are loaded in an iframe. The time measurement is the time from when the iframe's URL was set, to the time the iframe's onload event fired.</div>
+
+<a name='question1'></a>
+<div class=question> Q: What's the difference between "Clear Disk &amp; Mem Cache" and "Clear Mem Cache"?</div>
+
+<div class=answer> A: "Clear Disk &amp; Mem Cache" simulates the scenario of a user visiting your page for the first time, when they
+don't have any of your page's resources in their browser's cache.
+"Clear Mem Cache" simulates the scenario of a user coming back to your site after a previous session, for example, the previous day. 
+In this scenario the user would have resources in the disk cache, but not in Firefox memory, and so the resources must be read from disk.
+There's a third scenario that Hammerhead doesn't (currently) test - a user coming back to your site <i>within the same browser session</i>.
+In this scenario, your page's resources would not only be in disk cache, they would also (likely) be in memory, so the page would load even faster.
+In my experience, we work to make resources cacheable in order to optimize the "coming back tomorrow" scenario, and that's why Hammerhead
+clears the memory cache between reloads for "primed cache" measurements.</div>
+
+<a name='question2'></a>
+<div class=question> Q: How do these time measurements compare to my performance in the real world?</div>
+<div class=answer> A: In my blog post, <a href="http://www.stevesouders.com/blog/2008/09/30/hammerhead-moving-performance-testing-upstream/">Hammerhead: moving performance testing upstream</a>,
+I talk about how gathering data from real page views is the most precise performance metric.
+But, to foster faster development cycles, it's important to measure performance closer to the developer.
+This will be less precise than data gathered from real traffic, but Hammerhead helps by handling the cache,
+iterating over multiple URLs, and gathering and reporting the results. 
+<p>
+
+It's not a question of one or the other &ndash; both should be done. 
+Testing performance on your dev box will give you more immediate feedback on the impact of your changes.
+Real page view data is ground-truth for what your users are actually experiencing.
+As discussed in the blog post, using a bandwidth throttler on your dev box is the most important thing you can do
+to make your results closer to what you'll see in the real world.</div>
+
+<a name='question3'></a>
+<div class=question> Q: Does Hammerhead measure Web 2.0 pages?</div>
+<div class=answer> A: Not currently. I planning on adding a callback capability for logging time measurements.
+This could be used by Web 2.0 apps to record the time for an Ajax action, and initiate the next action.</div>
+
+<a name='question4'></a>
+<div class=question> Q: Why do the load times differ between Fasterfox, YSlow, Firebug Net Panel, and Hammerhead?</div>
+
+<div class=answer> A: YSlow and Hammerhead should be pretty close - within 15 milliseconds. 
+Both use the same technique (I know - I wrote both pieces of code).
+The reason they can be off by 15 milliseconds is due to the time resolution of JavaScript's <code>Date</code> implementation.
+The finest granularity is 15 milliseconds, so if the YSlow and Hammerhead timers aren't collected in the exact same execution loop,
+they're guaranteed to be off by 15 milliseconds.</div>
+
+<a name='question5'></a>
+<div class=question> Q: How come the first page load time when I open the browser or open a new tab isn't measured?</div>
+<div class=answer> A: Hammerhead measures page loads starting from the previous page's onbeforeunload event.
+Since there is to "previous page", the first page loads in a tab or browser aren't measured.
+I hope to fix this.</div>
+
+<a name='question6'></a>
+<div class=question> Q: What version(s) of Firefox does Hammerhead support?</div>
+
+<div class=answer> A: Firefox 2 and 3.</div>
+
+<a name='question7'></a>
+<div class=question> Q: Do I need Firebug?</div>
+<div class=answer> A: Yes. You can get Firebug from <a href='http://getfirebug.com'>getfirebug.com</a>.</div>
+
+<a name='question8'></a>
+<div class=question> Q: Why should I disable Firebug panels?</div>
+
+<div class=answer> A: It's possible that Firebug could affect page load times. To mitigate this effect, disable the Console, Script, and Net panels. You can do this by selecting each of those tabs, clicking on the dropdown menu, and choosing "Disabled".</div>
+
+<a name='question9'></a>
+<div class=question> Q: Any known bugs or issues?</div>
+<div class=answer> A: Current known issues with Hammerhead:
+<ul>
+  <li> Saving Export Data - To save the exported data you have to copy-paste. Doing File | Save doesn't work.
+  <li> Hammerhead Timer Stops Working - Once you run a Hammerhead test (i.e., use the Hammer functionality), Hammerhead will no longer display the load time of pages in the "Cache &amp; Time" tab.
+
+</ul></div>
+
+<a name='question10'></a>
+<div class=question> Q: What's on the todo list?</div>
+<div class=answer> A: <ul>
+  <li> A way to measure Web 2.0 actions.
+  <li> Add an option to beacon data to a web server for gathering results and sharing with co-workers.
+  <li> Make Hammerhead a standalone Firefox add-on to mitigate the effect Firebug may have on results.
+  <li> In addition to showing overall load time, show the time for just the HTML document response.
+
+</ul></div>
+
+</ul>
+
+
+</div> <!-- contents -->
+
+</body>
+
+</html>

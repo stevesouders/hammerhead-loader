@@ -1,0 +1,3 @@
+content hammerhead chrome/content/ xpcnativewrappers=no
+
+overlay chrome://firebug/content/firebugOverlay.xul         chrome://hammerhead/content/hammerheadOverlay.xul

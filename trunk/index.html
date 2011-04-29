@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>Hammerhead</title>
+<link rel="icon" type="image/gif" href="chrome/content/icon-16x16.gif" />
+<script>
+function installXPI(href)
+{
+    if (typeof(InstallTrigger) != 'undefined') {
+        var xpi = {'hammerhead': href};
+        InstallTrigger.install(xpi);
+    }
+    else {
+        alert("You must be using Firefox.");
+    }
+}
+</script>
+</head>
+<body>
+
+<h1><img src="chrome/content/icon-52x52.png" width=52 height=52> Hammerhead <font style="font-size: 0.5em">Firebug Add-on</font></h1>
+
+<div id=contents class=contents>
+<p>
+<nobr><a href="hammerhead.xpi" onclick="installXPI('hammerhead.xpi'); return false;"><img border=0 src="http://getlivecoder.com/download.gif"></a>
+<a href="http://www.stevesouders.com/blog/2008/09/30/hammerhead-moving-performance-testing-upstream/" style="color: #E65F50; margin-left: 500px; text-decoration: underline; font-weight: bold;">blog post</a>
+ | <a href="faq.php" style="color: #E65F50; text-decoration: underline; font-weight: bold;">FAQ</a></nobr>
+</p>
+
+<p style="margin-bottom: 0;">
+<i>Hammerhead</i> adds a tab to <a href="http://getfirebug.com/">Firebug</a> for measuring the load time of web pages.
+</p>
+
+<p style="margin-bottom: 0;">
+To install:
+</p>
+<ol>
+  <li> install <a href="http://getfirebug.com">Firebug</a>
+  <li> install <a href="hammerhead.xpi" onclick="installXPI('hammerhead.xpi'); return false;">Hammerhead</a>
+</ol>
+
+<p style="margin-bottom: 0; margin-top: 2em;">
+In Firefox 3, if you get this error:
+</p>
+<p style="margin: 4px 40px 4px 40px;">
+<code>"Hammerhead" will not be installed because it does not provide secure updates.</code>
+</p>
+<p style="margin: 0 0 0.5em 0;">
+follow these steps:
+</p>
+<ol>
+  <li> enter "about:config" into address bar
+  <li> right click somewhere in the list of keys below; select New->Boolean
+  <li> enter "extensions.checkUpdateSecurity" as the name
+  <li> select false as the value
+  <li> install <a href="hammerhead.xpi" onclick="installXPI('hammerhead.xpi'); return false;">Hammerhead</a> again
+</ol>
+
+</div> <!-- contents -->
+
+</body>
+
+</html>
