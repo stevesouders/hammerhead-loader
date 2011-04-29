@@ -1,0 +1,41 @@
+<?xml version="1.0"?> 
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"> 
+
+    <script type="application/x-javascript" src="chrome://hammerhead/content/hammerheadPanel.js"/> 
+    <script type="application/x-javascript" src="chrome://hammerhead/content/hammerheadContext.js"/> 
+    <script type="application/x-javascript" src="chrome://hammerhead/content/testrun.js"/> 
+    <script type="application/x-javascript" src="chrome://hammerhead/content/utils.js"/> 
+
+    <commandset id="mainCommandSet"> 
+        <command id="cmd_hammer" oncommand="Firebug.HammerheadModule.doHammer()"/> 
+        <command id="cmd_setup" oncommand="Firebug.HammerheadModule.doSetup()"/> 
+        <command id="cmd_cache" oncommand="Firebug.HammerheadModule.doCache()"/> 
+    </commandset> 
+    
+    <toolbar id="fbToolbar" align="center"> 
+        <hbox id="fbToolbarInner" insertbefore="fbDetachButton" flex="1" align="center"> 
+            <hbox id="fbHammerheadButtons" insertafter="fbNetButtons"> 
+                <toolbarseparator/>                               
+                <toolbarbutton label="Cache &amp; Time" id="btn_cache" type="radio" group="fbr_buttons" class="toolbar-text-button" tooltiptext="cache controls" command="cmd_cache"/> 
+                <toolbarbutton label="Hammer" id="btn_hammer" type="radio" group="fbr_buttons" class="toolbar-text-button" tooltiptext="load URLs" command="cmd_hammer"/> 
+                <toolbarbutton label="Setup" id="btn_setup" type="radio" group="fbr_buttons" class="toolbar-text-button" tooltiptext="setup tests" command="cmd_setup"/> 
+            </hbox> 
+        </hbox> 
+    </toolbar> 
+
+	<statusbar id="status-bar">
+		<statusbarpanel id="hammerheadStatusBar" context="hammerheadStatusContextMenu" insertafter="fbStatusBar" onmousedown="Firebug.HammerheadModule.doOpenPanel(FirebugContext, event)">
+			<image src="chrome://hammerhead/content/icon-disabled-16x16.gif" id="hammerheadStatusIcon" label=""/>
+            <label id="hammerheadStatusTime" label="" style="width: 35px;"/>
+        </statusbarpanel>
+
+        <menupopup id="hammerheadStatusContextMenu" onpopupshowing="FirebugChrome.onOptionsShowing(this)">
+        	<menuitem label="Hammerhead Home" oncommand="Firebug.HammerheadModule.goHome()"/>
+        	<menuseparator/>
+            <menuitem label="Clear Disk &amp; Mem Cache" oncommand="Firebug.HammerheadModule.clearCache(true, true)" />   
+            <menuitem label="Clear Mem Cache" oncommand="Firebug.HammerheadModule.clearCache(false, true)" />   
+        </menupopup>
+	</statusbar>
+            
+</overlay>
